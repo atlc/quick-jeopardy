@@ -3,11 +3,19 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 const Clue = (clue: IClue) => {
-    const [q_or_a, setQORA] = useState(clue.question)
+    const [q_or_a, set_Q_OR_A] = useState(clue.question);
+    const [shouldShowAnswer, setShouldShowAnswer] = useState(false);
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLElement>) => {
         e.preventDefault();
-        setQORA(clue.answer);
+        // Parsing out any escape slashes or HTML brackets from the answers
+        if (!shouldShowAnswer) {
+            set_Q_OR_A('ANSWER:\t' + clue.answer.replace(/\\/g, '').replace(/<[^>]*>/g, ''));
+            setShouldShowAnswer(!shouldShowAnswer);
+        } else {
+            set_Q_OR_A(clue.question);
+            setShouldShowAnswer(!shouldShowAnswer);
+        }
     }
 
     return (
